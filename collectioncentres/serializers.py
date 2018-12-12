@@ -5,9 +5,9 @@ from collectioncentres.models import CollectionCentre, CollectionCentreStock
 
 class CollectionCentreSerializer(serializers.ModelSerializer):
 
-    user = serializers.HiddenField(
-        default=serializers.CurrentUserDefault(),
-    )
+    # user = serializers.HiddenField(
+    #     default=serializers.CurrentUserDefault(),
+    # )
 
     class Meta:
 
@@ -17,9 +17,9 @@ class CollectionCentreSerializer(serializers.ModelSerializer):
 
 class CollectionCentreStockSerializer(serializers.ModelSerializer):
 
-    user = serializers.HiddenField(
-        default=serializers.CurrentUserDefault(),
-    )
+    # user = serializers.HiddenField(
+    #     default=serializers.CurrentUserDefault(),
+    # )
 
     class Meta:
 

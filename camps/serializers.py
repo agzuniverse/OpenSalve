@@ -5,9 +5,9 @@ from camps.models import Camps, CampInhabitants
 
 class CampsSerializer(serializers.ModelSerializer):
 
-    user = serializers.HiddenField(
-        default=serializers.CurrentUserDefault(),
-    )
+    # user = serializers.HiddenField(
+    #     default=serializers.CurrentUserDefault(),
+    # )
 
     class Meta:
 

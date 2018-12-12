@@ -20,12 +20,6 @@ class Camps(models.Model):
         help_text='Location name',
     )
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        db_column='user',
-    )
-
     incharge = models.CharField(
         max_length=40,
         help_text='Camp incharge',
@@ -35,11 +29,11 @@ class Camps(models.Model):
         help_text='Camp phone number'
     )
 
-    photo = models.ImageField(
-        blank=True,
-        null=True,
-        upload_to='camps/%Y/%m/%d/'
-    )
+    # photo = models.ImageField(
+    #     blank=True,
+    #     null=True,
+    #     upload_to='camps/%Y/%m/%d/'
+    # )
 
     capacity = models.IntegerField(
         help_text='The max capacity of the camp'
