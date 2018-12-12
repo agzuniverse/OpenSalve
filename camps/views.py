@@ -82,6 +82,19 @@ class CampStockView(views.APIView):
         existing_supplies = Camps.objects.filter(
             id=id).values('supplies').first()['supplies']
         Camps.objects.filter(id=id).update(
-            supplies=existing_supplies+','+supply)
+            supplies=existing_supplies+','+supply.strip())
+
+        return Response("success")
+
+class CampStockDelete(views.APIView):
+     def post(self, request, id):
+        supply = request.data['supply']
+        existing_supplies = Camps.objects.filter(
+            id=id).values('supplies').first()['supplies'].split(",")
+        if supply in existing_supplies:
+            existing_supplies.remove(supply)
+        print(existing_supplies)
+        Camps.objects.filter(id=id).update(
+            supplies=",".join(existing_supplies))
 
         return Response("success")

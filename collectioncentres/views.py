@@ -62,3 +62,15 @@ class CollectionCentreStockView(views.APIView):
             supplies=existing_supplies+','+supply)
 
         return Response("success")
+
+class CollectionCentreStockDelete(views.APIView):
+     def post(self, request, id):
+        supply = request.data['supply']
+        existing_supplies = CollectionCentre.objects.filter(
+            id=id).values('supplies').first()['supplies'].split(",")
+        if supply in existing_supplies:
+            existing_supplies.remove(supply)
+        CollectionCentre.objects.filter(id=id).update(
+            supplies=",".join(existing_supplies))
+
+        return Response("success")
