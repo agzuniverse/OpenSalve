@@ -5,6 +5,8 @@ from help.models import Requests, Comments
 from help.permissions import IsVolunteer, IsPhoneAuthenticated
 from help.serializers import RequestsStatusSerializer, RequestsSerializer
 from help.serializers import RequestCommentsRead, RequestCommentsWrite
+from rest_framework import views
+from rest_framework.response import Response
 
 
 class Request(generics.ListCreateAPIView):
@@ -26,9 +28,9 @@ class RequestView(generics.RetrieveUpdateAPIView):
 
     lookup_url_kwarg = 'id'
 
-    permission_classes = (
-        IsPhoneAuthenticated,
-    )
+    # permission_classes = (
+    #     IsPhoneAuthenticated,
+    # )
 
     def get_queryset(self):
         id = self.kwargs.get(self.lookup_url_kwarg)
@@ -47,15 +49,25 @@ class RequestStatus(generics.RetrieveUpdateAPIView):
 
     lookup_url_kwarg = 'id'
 
-    permission_classes = (
-        IsAuthenticatedOrReadOnly,
-        IsVolunteer,
-    )
+    # permission_classes = (
+    #     IsAuthenticatedOrReadOnly,
+    #     IsVolunteer,
+    # )
 
     def get_queryset(self):
         id = self.kwargs.get(self.lookup_url_kwarg)
         request = Requests.objects.filter(id=id)
         return request
+
+
+class RequestStatusChange(views.APIView):
+    def get(self, request, id):
+        curr_status = Requests.objects.filter(
+            id=id).values('status').first()['status']
+        Requests.objects.filter(id=id).update(
+            status="Teams have responded to the request")
+
+        return Response("success")
 
 
 class RequestComments(generics.ListCreateAPIView):
@@ -66,9 +78,9 @@ class RequestComments(generics.ListCreateAPIView):
     Add a comment to request
     """
 
-    permission_classes = (
-        IsAuthenticatedOrReadOnly,
-    )
+    # permission_classes = (
+    #     IsAuthenticatedOrReadOnly,
+    # )
 
     queryset = Comments.objects.all()
 
