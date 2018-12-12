@@ -16,16 +16,16 @@ class NewsView(generics.ListCreateAPIView):
     Add a news
     """
 
-    permission_classes = (
-        IsAuthenticatedOrReadOnly,
-        IsAdmin,
-    )
+    # permission_classes = (
+    #     IsAuthenticatedOrReadOnly,
+    #     IsAdmin,
+    # )
 
     serializer_class = NewsSerializer
     queryset = News.objects.all()
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
 
 
 class NewsInfo(generics.RetrieveUpdateAPIView):
@@ -35,9 +35,9 @@ class NewsInfo(generics.RetrieveUpdateAPIView):
 
     lookup_url_kwarg = 'id'
 
-    permission_classes = (
-        IsAdmin,
-    )
+    # permission_classes = (
+    #     IsAdmin,
+    # )
 
     def get_queryset(self):
         id = self.kwargs.get(self.lookup_url_kwarg)

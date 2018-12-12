@@ -16,11 +16,5 @@ class News(models.Model):
         help_text='News message'
     )
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        db_column='user',
-    )
-
     def __str__(self):
         return self.contents
