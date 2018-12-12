@@ -37,6 +37,11 @@ class RequestView(generics.RetrieveUpdateAPIView):
         request = Requests.objects.filter(id=id)
         return request
 
+class RequestDelete(views.APIView):
+     def get(self, request, id):
+        Requests.objects.filter(id=id).delete()
+
+        return Response("success")
 
 class RequestStatus(generics.RetrieveUpdateAPIView):
     """Get/Set status of request
