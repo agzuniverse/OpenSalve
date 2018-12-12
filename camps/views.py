@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 from camps.models import Camps, CampInhabitants
 from camps.serializers import CampsSerializer, CampInhabitantsSerializer
 from help.permissions import IsVolunteer
+from rest_framework import views
+from rest_framework.response import Response
 
 
 class Camp(generics.ListCreateAPIView):
@@ -14,10 +16,10 @@ class Camp(generics.ListCreateAPIView):
     Add a camp
     """
 
-    permission_classes = (
-        IsAuthenticatedOrReadOnly,
-        IsVolunteer,
-    )
+    # permission_classes = (
+    #     IsAuthenticatedOrReadOnly,
+    #     IsVolunteer,
+    # )
 
     serializer_class = CampsSerializer
     queryset = Camps.objects.all()
@@ -55,3 +57,22 @@ class CampInhabitantsView(generics.ListCreateAPIView):
         id = self.kwargs.get(self.lookup_url_kwarg)
         camp = CampInhabitants.objects.filter(camp=id)
         return camp
+
+
+class CampStockView(views.APIView):
+    """
+    post:
+    Add information about stock item needed
+    """
+    # permission_classes = (
+    #     IsAuthenticated,
+    # )
+
+    def post(self, request, id):
+        supply = request.data['supply']
+        existing_supplies = Camps.objects.filter(
+            id=id).values('supplies').first()['supplies']
+        Camps.objects.filter(id=id).update(
+            supplies=existing_supplies+','+supply)
+
+        return Response("success")

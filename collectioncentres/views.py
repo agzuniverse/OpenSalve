@@ -1,5 +1,7 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework import views
+from rest_framework.response import Response
 
 from collectioncentres.models import CollectionCentre
 from collectioncentres.serializers import *
@@ -14,10 +16,10 @@ class CollectionCentreList(generics.ListCreateAPIView):
     Add a collection centre
     """
 
-    permission_classes = (
-        IsAuthenticatedOrReadOnly,
-        IsVolunteer,
-    )
+    # permission_classes = (
+    #     IsAuthenticatedOrReadOnly,
+    #     IsVolunteer,
+    # )
 
     serializer_class = CollectionCentreSerializer
     queryset = CollectionCentre.objects.all()
@@ -43,23 +45,20 @@ class CollectionCentreView(generics.RetrieveAPIView):
         }
 
 
-class CollectionCentreStockView(generics.ListCreateAPIView):
-    """Get info about stock in a collection centre
-    get:
-    Get information about stock in collection centre
+class CollectionCentreStockView(views.APIView):
+    """
     post:
     Add information about stock item needed
     """
-    permission_classes = (
-        IsAuthenticatedOrReadOnly,
-        IsVolunteer,
-    )
+    # permission_classes = (
+    #     IsAuthenticated,
+    # )
 
-    serializer_class = CollectionCentreStockSerializer
+    def post(self, request, id):
+        supply = request.data['supply']
+        existing_supplies = CollectionCentre.objects.filter(
+            id=id).values('supplies').first()['supplies']
+        CollectionCentre.objects.filter(id=id).update(
+            supplies=existing_supplies+','+supply)
 
-    lookup_url_kwarg = 'id'
-
-    def get_queryset(self):
-        id = self.kwargs.get(self.lookup_url_kwarg)
-        stock = CollectionCentreStock.objects.filter(centre=id)
-        return stock
+        return Response("success")

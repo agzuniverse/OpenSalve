@@ -12,6 +12,8 @@ from accounts.permissions import IsEditable
 from accounts.serializers import UserSerializer
 from accounts.serializers import UserSerializerBasic
 
+from django.contrib.auth import authenticate, login, logout
+
 
 class UserRegister(CreateAPIView):
     """post: Register a user
@@ -32,6 +34,7 @@ class UserLogin(APIView):
         token, created = Token.objects.get_or_create(user=request.user)
 
         user = User.objects.get(username=request.user.username)
+        userlogger = authenticate(username=user.name, password=user.password)
 
         content = {
             'name': user.name,

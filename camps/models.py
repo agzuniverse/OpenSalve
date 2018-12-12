@@ -48,6 +48,11 @@ class Camps(models.Model):
         default=0,
         help_text='The number of people currently in the camp'
     )
+    supplies = models.CharField(
+        max_length=1000,
+        default="No supplies needed right now,",
+        help_text='Coma separated string of supplies'
+    )
 
     def __str__(self):
         return self.location
