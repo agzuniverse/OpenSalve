@@ -19,11 +19,28 @@ class CollectionCentre(models.Model):
         max_length=200,
         help_text='Location name',
     )
-
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         db_column='user',
+    )
+    incharge = models.CharField(
+        max_length=40,
+        help_text='Camp incharge',
+    )
+    phone = models.CharField(
+        max_length=15,
+        help_text='Camp phone number'
+    )
+    photo = models.ImageField(
+        blank=True,
+        null=True,
+        upload_to='camps/%Y/%m/%d/'
+    )
+    supplies = models.CharField(
+        max_length=1000,
+        default="No supplies needed right now,",
+        help_text='Coma separated string of supplies'
     )
 
     def __str__(self):
