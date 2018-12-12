@@ -7,5 +7,7 @@ urlpatterns = [
     # c/ Camp
     path('c/<int:id>', views.CampView.as_view()),
     path('c/<int:id>/inhabitants', views.CampInhabitantsView.as_view()),
+    path('c/<int:id>/inhabitants/<int:inhab_id>',
+         views.CampInhabitantsDelete.as_view()),
     path('c/<int:id>/stock', views.CampStockView.as_view()),
 ]

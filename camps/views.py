@@ -59,6 +59,15 @@ class CampInhabitantsView(generics.ListCreateAPIView):
         return camp
 
 
+class CampInhabitantsDelete(views.APIView):
+    def get(self, request, id, inhab_id):
+        all_inhabs = CampInhabitants.objects.filter(camp=id)
+        for inhab in all_inhabs:
+            if(inhab.id == inhab_id):
+                inhab.delete()
+        return Response("success")
+
+
 class CampStockView(views.APIView):
     """
     post:
